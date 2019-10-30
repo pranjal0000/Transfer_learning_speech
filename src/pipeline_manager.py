@@ -29,8 +29,8 @@ def train(model_name):
 
 	from dl_model import dl_model
 	
-	if model_name == 'fullConn' or model_name == None:
-		driver = dl_model('fullConn')
+	if model_name == 'UNet' or model_name == None:
+		driver = dl_model('UNet')
 		driver.train_model()
 	else:
 		log.info("Not yet implemented")
@@ -39,8 +39,8 @@ def test(model_name):
 
 	from dl_model import dl_model
 
-	if model_name == 'fullConn' or model_name == None:
-		driver = dl_model('fullConn', mode='test')
+	if model_name == 'UNet' or model_name == None:
+		driver = dl_model('UNet', mode='test')
 		driver.test_model()
 	else:
 		print("Not yet implemented")
@@ -49,8 +49,8 @@ def test_one_image( model_name, path, out_path):
 
 	from dl_model import dl_model
 
-	if model_name == 'fullConn' or model_name == None:
-		driver = dl_model('fullConn', mode='test_one')
+	if model_name == 'UNet' or model_name == None:
+		driver = dl_model('UNet', mode='test_one')
 		driver.test_one_image(path, out_path)
 	else:
 		print("Not yet implemented")
@@ -61,7 +61,7 @@ def test_entire_folder(model_name, path, out_path):
 
 	from dl_model import dl_model
 
-	if model_name == 'fullConn':
+	if model_name == 'UNet':
 
 		if not os.path.exists(out_path):
 			os.mkdir(out_path)
