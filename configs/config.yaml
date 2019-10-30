@@ -1,0 +1,103 @@
+project: segmentation
+
+name: fullConn
+
+dataloader: Own
+Text: False
+dataset: CommonVoice
+
+dir:
+  # Test_one: Exp/test_one_images
+  Exp: Exp
+  Output: Exp/Temporary
+  Output_Best: Exp/Best
+  Model_Output: Exp/
+  Model_Output_Best: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models_Best
+  Ensemble_Output: Exp/Ensemble_Output
+  Plots: Exp/Plots
+
+test_one:
+  transform: False
+  batch_size: 1
+  cpu_alloc: 1
+  Type: test_one
+  loader:
+    flag: False
+  dir: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/test_one_images
+
+train:
+  transform: False
+  batch_size: 1
+  cpu_alloc: 1
+  Type: train
+  loader:
+    flag: False  
+
+test:
+  transform: False
+  batch_size: 1
+  cpu_alloc: 1
+  Type: test
+  loader:
+    flag: False
+
+ensemble:
+  1: Exp/All_results/Best_overall_result
+  # 2: Exp/All_results/Best_Patches
+  3: Exp/All_results/Best_Spots
+  # 4: Exp/All_results/Best_Wrinkle
+ensemble_way: max_voting # avg_voting
+
+target_transform: False
+retrain: True
+# predictor_path: 'src/shape_predictor_68_face_landmarks.dat'
+
+# Logging
+
+image_size: 1024
+
+show_some: 1
+log_interval_steps: 500
+print_log_steps: 50
+test_now: 500
+update_config: 2
+cummulative_batch_steps: 1
+
+# Parameters
+
+padding: 0
+n_channels: 3
+n_classes: 9
+
+lr: 0.0001
+
+optimizer: Adam
+optimizer_new: False   #If want to refresh the optimizer parameters(Like when shifting optimizers from Adam to SGD or vice versa)
+lossf: CEL
+weighted_lossf_parameter : 0.5
+depth: 5
+
+cuda: True
+seed: 2
+
+epoch: 3
+
+PreTrained_net: False
+weighted_loss: True
+
+PreTrained_model:
+  check: False
+  checkpoint: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models/4500_0_checkpoint.pth.tar
+  checkpoint_info: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models/4500_0_info_checkpoint.pth.tar
+  # checkpoint: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models_Best/0_0_checkpoint.pth.tar
+  # checkpoint_info: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models_Best/0_0_info_checkpoint.pth.tar
+  checkpoint_best: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models_Best/0_0_checkpoint.pth.tar
+  checkpoint_best_info: /media/mayank/0b40607e-7efc-4216-b12f-8bb86facfaed/Text/Models_Best/0_0_info_checkpoint.pth.tar
+
+augmentation:
+  brightness: 0.1
+  contrast: 0.1
+  saturation: 0.1
+  hue: 0.1
+
+
