@@ -30,5 +30,5 @@ class Logger():
 		else:
 			string = str(datetime.now().time())[:-7] +': '+temp
 			log_string = str(datetime.now().time()) +': '+temp
-		print(string)
+		# print(string)
 		self.f.write(log_string+'\n')
