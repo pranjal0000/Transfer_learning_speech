@@ -19,16 +19,16 @@ for file in os.listdir(str(path_dir)):
 	# print(temp)
 	sound.export(str(out_dir)+temp+".wav", format="wav")
 
-	audio, sample_rate = librosa.load(str(out_dir)+temp+'.wav')
+# 	audio, sample_rate = librosa.load(str(out_dir)+temp+'.wav')
 
 
-	spectrum = librosa.stft(audio,n_fft=512) 
+# 	spectrum = librosa.stft(audio,n_fft=512) 
 	# print(type(spectrum))
-	spectrum_imag=np.imag(spectrum)
-	spectrum_real=np.real(spectrum)
-	spectrum_new=np.dstack((spectrum_real,spectrum_imag))
+# 	spectrum_imag=np.imag(spectrum)
+# 	spectrum_real=np.real(spectrum)
+# 	spectrum_new=np.dstack((spectrum_real,spectrum_imag))
 
-	np.save(str(pickle_dir)+temp+'.npy',spectrum_new,allow_pickle=True)
+# 	np.save(str(pickle_dir)+temp+'.npy',spectrum_new,allow_pickle=True)
 	# spec=np.load('save.npy',allow_pickle=True)
 	# if(spec==spectrum):
 	# 	print("yay")
