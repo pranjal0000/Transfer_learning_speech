@@ -47,12 +47,15 @@ class CommonVoice(Dataset):
 
 		x = random.randrange(0,len(noise)-len(audio),1)
 		# noisy = audio
-		noisy = audio + noise[x:x+len(audio)]*(np.random.uniform(0.006,0.008))
-		noisy = noisy + fx(noisy)*(np.random.uniform(0.13,0.23))
+		noisy = audio + noise[x:x+len(audio)]*(np.random.uniform(0.1,0.2))
+		noisy = noisy + fx(noisy)*(np.random.uniform(0.33,0.43))
 
 		spectrum = librosa.stft(audio,n_fft = 512)
 		sf.write('noisy/'+self.mapping[idx],noisy,22050,subtype='PCM_24')
 
+		audio = audio + noise[x:x+len(audio)]*(np.random.uniform(0.003,0.004))
+		audio = audio + fx(noisy)*(np.random.uniform(0.1,0.15))		
+		sf.write('out/'+self.mapping[idx],audio,22050,subtype='PCM_24')
 		# print(spectrum.shape)
 
 		spectrum_imag = np.imag(spectrum)
@@ -116,11 +119,11 @@ for no, data in enumerate(trainLoader):
 
 	reconstructed_audio = librosa.istft(outputx)
 
-	sf.write('out/out'+str(no) + '.wav',reconstructed_audio,22050,subtype='PCM_24')
+	# sf.write('out/out'+str(no) + '.wav',reconstructed_audio,22050,subtype='PCM_24')
 
 	reconstructed_audio = librosa.istft(datax)
 
-	sf.write('noisydr/nout1'+str(no) + '.wav',reconstructed_audio,22050,subtype='PCM_24')
+	# sf.write('noisydr/nout1'+str(no) + '.wav',reconstructed_audio,22050,subtype='PCM_24')
 	# sf.write('out.wav',reconstructed_audio,sample_rate,subtype='PCM_24')
 
 
