@@ -17,7 +17,7 @@ class CommonVoice(Dataset):
 	def __init__(self,root_dir, transform = transforms.ToTensor(), type = 'train'):
 		super(CommonVoice).__init__()
 		self.mapping = {}
-		self.root_dir = ''
+		self.root_dir = root_dir
 		self.transform = transform
 
 		if type == 'train':
@@ -32,7 +32,7 @@ class CommonVoice(Dataset):
 		elif type == 'test':
 			files = files[int(len(files)*0.9):len(files)]
 
-		for i in range(files):
+		for i in range(len(files)):
 			self.mapping[i] = files[i]	
 
 
@@ -57,7 +57,7 @@ class CommonVoice(Dataset):
 
 
 		audio = np.dstack((spectrum_new,spectrum1_new))
-		audio = self.transform(audio)
+		audio = self.transform(audio).float()
 
 		return audio
 
