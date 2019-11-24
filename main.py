@@ -1,4 +1,5 @@
 import click
+# import system
 from src.pipeline_manager import PipelineManager
 
 from src.logger import Logger
@@ -40,6 +41,8 @@ if __name__ == "__main__":
 
 	pipeline_manager = PipelineManager()
 	log = Logger()
+
 	log.first()
+	print("Log should have something in it") #########
 	
 	main()
