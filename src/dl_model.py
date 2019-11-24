@@ -9,16 +9,16 @@ import random
 import matplotlib.pyplot as plt
 # import cv2
 import shutil
-from scipy.misc import imresize
+# from scipy.misc import imresize
 import time
 import json
 
-from read_yaml import read_yaml
-from logger import Logger
-from model import unet_model
+from .read_yaml import read_yaml
+from .logger import Logger
+# from .model import unet_model
 
-import threading
-from dataloader import *
+from .dataloader import *
+from .model.unet_model import UNet
 
 log = Logger()
 ####
@@ -66,19 +66,21 @@ class dl_model():
 
 				self.model_best = torch.load(self.config['PreTrained_model']['checkpoint_best'])['best']
 				if mode == 'train':
-					self.epoch_start, self.training_info = self.model.load(self.config['PreTrained_model']['checkpoint'], self.config['PreTrained_model']['checkpoint_info'], mode)
+					self.epoch_start, self.training_info = self.model.load(self.config['PreTrained_model']['checkpoint'], self.config['PreTrained_model']['checkpoint_info'])
 				else:
-					self.epoch_start, self.training_info = self.model.load(self.config['PreTrained_model']['checkpoint'], self.config['PreTrained_model']['checkpoint_info'], mode)
+					self.epoch_start, self.training_info = self.model.load(self.config['PreTrained_model']['checkpoint'], self.config['PreTrained_model']['checkpoint_info'])
 
-				self.start_no = int(self.config['PreTrained_model']['checkpoint'].split('/')[-1].split('_')[0])
-				self.epoch_start = int(self.config['PreTrained_model']['checkpoint'].split('/')[-1].split('_')[1])
+				# self.start_no = int(self.config['PreTrained_model']['checkpoint'].split('/')[-1].split('_')[0]) ########
+				self.start_no = 0
+				# self.epoch_start = int(self.config['PreTrained_model']['checkpoint'].split('/')[-1].split('_')[1]) ########
+				self.epoch_start = 0
 
-				if mode == 'train':
+				# if mode == 'train':
 
-					self.plot_training['Loss'] = list(np.load(self.config['dir']['Plots']+'/'+str(self.epoch_start)+'_'+str(self.start_no)+'_training_loss.npy'))
+					# self.plot_training['Loss'] = list(np.load(self.config['dir']['Plots']+'/'+str(self.epoch_start)+'_'+str(self.start_no)+'_training_loss.npy'))
 					# self.plot_training['Acc'] = list(np.load(self.config['dir']['Plots']+'/'+str(self.epoch_start)+'_'+str(self.start_no)+'_training_accuracy.npy'))
 					# self.plot_testing['Acc'] = list(np.load(self.config['dir']['Plots']+'/'+str(self.epoch_start)+'_'+str(self.start_no)+'_testing_accuracy.npy'))
-					self.plot_testing['Loss'] = list(np.load(self.config['dir']['Plots']+'/'+str(self.epoch_start)+'_'+str(self.start_no)+'_testing_loss.npy'))
+					# self.plot_testing['Loss'] = list(np.load(self.config['dir']['Plots']+'/'+str(self.epoch_start)+'_'+str(self.start_no)+'_testing_loss.npy'))
 				
 				log.info('Loaded the model')
 	
@@ -87,7 +89,7 @@ class dl_model():
 		if model == 'UNet':
 			log.info("UNet")
 
-			return UNet()
+			return UNet(self.config)
 		else:
 			log.info("Can't find model")
 
@@ -144,7 +146,7 @@ class dl_model():
 		self.plot_training['Loss'].append(np.mean(self.training_info['Loss']))
 		# self.plot_training['Acc'].append(np.mean(self.training_info['Acc']))
 
-		# self.show_graph(epoch_i, no)
+		self.show_graph(epoch_i, no)
 		self.start_training()
 
 	def train_model(self):
@@ -166,11 +168,10 @@ class dl_model():
 					data_t = data[:,0:2,:,:]
 					data_exp = data[:,2:4,:,:]
 
-					output = self.model(data)
+					output = self.model(data_t)
 
 					loss = self.model.lossf(output,data_exp)
-					training_info['Loss'].append(loss)
-					# training_info['Loss'].append(loss)
+					self.training_info['Loss'].append(loss.data.cpu())
 
 					loss.backward()			
 
@@ -202,7 +203,7 @@ class dl_model():
 
 				log.info()
 				self.start_no = 0
-				self.training_info = {'Loss': []}
+				# self.training_info = {'Loss': []}
 				# self.training_info = {'Loss': [], 'Acc': [], 'Keep_log': True, 'Count':0}
 				# self.scheduler.step()
 
@@ -248,7 +249,7 @@ class dl_model():
 					# start = time.time()
 
 			log.info('Test Results\n\n', )
-			testing_info['Loss'] = float(loss_cum/num_loss)
+			self.testing_info['Loss'] = float(loss_cum/num_loss)
 
 			if self.mode =='train':
 
