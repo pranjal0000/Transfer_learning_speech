@@ -1,7 +1,7 @@
 import yaml
 import os
-from read_yaml import read_yaml
-from logger import Logger
+from .read_yaml import read_yaml
+from .logger import Logger
 
 log = Logger()
 
@@ -27,7 +27,7 @@ class PipelineManager():
 
 def train(model_name):
 
-	from dl_model import dl_model
+	from .dl_model import dl_model
 	
 	if model_name == 'UNet' or model_name == None:
 		driver = dl_model('UNet', mode = 'train')
@@ -37,7 +37,7 @@ def train(model_name):
 
 def test(model_name):
 
-	from dl_model import dl_model
+	from .dl_model import dl_model
 
 	if model_name == 'UNet' or model_name == None:
 		driver = dl_model('UNet', mode='test')
